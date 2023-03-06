@@ -1,6 +1,5 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:okra_widget_official/raw/okra_html.dart';
 import 'package:okra_widget_official/utils/helper.dart';
 import 'dart:io' show Platform;
 import 'view/web.dart';

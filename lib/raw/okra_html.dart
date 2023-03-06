@@ -72,7 +72,7 @@ String buildOkraWidgetWithShortUrl(final String? shortUrl) => '''
     <body onload="buildWithShortUrl()" style="background-color:#fff;height:100vh">
       <script src="https://cdn.okra.ng/v2/bundle.js"></script>
       <script type="text/javascript">
-          window.onload = buildWithOptions;
+          window.onload = buildWithShortUrl;
           function buildWithShortUrl(){
               Okra.buildWithShortUrl({
                 short_url: '$shortUrl',
