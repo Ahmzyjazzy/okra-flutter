@@ -74,27 +74,30 @@ String buildOkraWidgetWithShortUrl(final String? shortUrl) => '''
       <script type="text/javascript">
           window.onload = buildWithShortUrl;
           function buildWithShortUrl(){
+              let count = 0;
               Okra.buildWithShortUrl({
                 short_url: '$shortUrl',
                 onSuccess: function(data){
-                    // let response = {event:'option success', data}
+                    count = count + 1;
 
-                    const {bank_id, customer_id, record_id, accounts} = data;
-                    const connectedAccount = (accounts ? (accounts.length > 0 ? accounts.find((acc) => acc.connected): null) : null)
+                    if(count % 2 == 0){
+                      const {bank_id, customer_id, record_id, accounts} = data;
+                      const connectedAccount = (accounts ? (accounts.length > 0 ? (accounts.find((acc) => acc.connected) ?? accounts[0]): null) : null)
 
-                    const postData = {
-                        okra_bank_id: bank_id,
-                        okra_record_id: record_id,
-                        okra_customer_id: customer_id,
-                        okra_account_id: connectedAccount ? connectedAccount['id'] : null,
-                        okra_account_number: connectedAccount ? connectedAccount['nuban'] : null,
-                        okra_account_name: connectedAccount ? connectedAccount['name'] : null,
-                        okra_account_type: connectedAccount ? connectedAccount['type'] : null,
-                        response_json: JSON.stringify(response)
+                      const postData = {
+                          okra_bank_id: bank_id,
+                          okra_record_id: record_id,
+                          okra_customer_id: customer_id,
+                          okra_account_id: connectedAccount ? connectedAccount['id'] : null,
+                          okra_account_number: connectedAccount ? ''+connectedAccount['nuban']+'' : null,
+                          okra_account_name: connectedAccount ? connectedAccount['name'] : null,
+                          okra_account_type: connectedAccount ? connectedAccount['type'] : null,
+                          response_json: JSON.stringify(data)
+                      }
+
+                      let response = {event:'option success', data: postData}
+                      window.FlutterOnSuccess.postMessage(JSON.stringify(response)) 
                     }
-
-                    let response = {event:'option success', data: postData}
-                    window.FlutterOnSuccess.postMessage(JSON.stringify(response)) 
                 },
                 onClose: function(){
                     let response = {event:'option close'}
